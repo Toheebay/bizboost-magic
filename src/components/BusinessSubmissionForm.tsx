@@ -19,13 +19,14 @@ const BusinessSubmissionForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const businessName = formData.get("businessName") as string;
+    const description = formData.get("description") as string;
+    const email = formData.get("email") || "customer@business.com";
+    
     // Handle premium payment with Flutterwave
     if (paymentMethod === "premium") {
-      const form = e.target as HTMLFormElement;
-      const formData = new FormData(form);
-      const businessName = formData.get("businessName") as string;
-      const email = formData.get("email") || "customer@business.com";
-      
       // @ts-ignore - FlutterwaveCheckout is loaded globally
       FlutterwaveCheckout({
         public_key: "FLWPUBK-3d0e062fa50b5b538affc64535245178-X",
@@ -37,8 +38,9 @@ const BusinessSubmissionForm = () => {
           email: email,
           name: businessName || "Business Owner",
         },
-        callback: function (data: any) {
+        callback: async function (data: any) {
           console.log(data);
+          await postToSocialMedia(businessName, description);
           setShowSocialMedia(true);
           toast({
             title: "Marketing Campaign Started!",
@@ -70,8 +72,8 @@ const BusinessSubmissionForm = () => {
         return;
       }
       
-      // Simulate form submission for passcode
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Post to social media for passcode users
+      await postToSocialMedia(businessName, description);
       
       setShowSocialMedia(true);
       toast({
@@ -81,6 +83,44 @@ const BusinessSubmissionForm = () => {
     }
     
     setIsSubmitting(false);
+  };
+
+  const postToSocialMedia = async (businessName: string, description: string) => {
+    const platforms = ['twitter', 'facebook'];
+    const content = `Check out this amazing business: ${description}`;
+
+    for (const platform of platforms) {
+      try {
+        const response = await fetch('https://gluzzrbvqogiwvqdmdxh.supabase.co/functions/v1/post-to-social', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            platform,
+            content,
+            businessName,
+          }),
+        });
+
+        const result = await response.json();
+        console.log(`${platform} post result:`, result);
+        
+        if (result.success) {
+          toast({
+            title: `Posted to ${platform}!`,
+            description: `Successfully shared your business on ${platform}`,
+          });
+        }
+      } catch (error) {
+        console.error(`Error posting to ${platform}:`, error);
+        toast({
+          title: `${platform} Error`,
+          description: `Failed to post to ${platform}. Please try again.`,
+          variant: "destructive",
+        });
+      }
+    }
   };
 
   return (

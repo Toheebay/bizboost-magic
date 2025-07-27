@@ -1,1 +1,4 @@
 project_id = "gluzzrbvqogiwvqdmdxh"
+
+[functions.post-to-social]
+verify_jwt = false
