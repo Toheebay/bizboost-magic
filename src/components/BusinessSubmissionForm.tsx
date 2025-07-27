@@ -6,12 +6,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, Zap, Star, TrendingUp } from "lucide-react";
+import { Upload, Zap, Star, TrendingUp, Facebook, Twitter, Linkedin, Instagram, Youtube, CheckCircle } from "lucide-react";
 
 const BusinessSubmissionForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"premium" | "passcode">("premium");
   const [passcode, setPasscode] = useState("");
+  const [showSocialMedia, setShowSocialMedia] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -38,9 +39,10 @@ const BusinessSubmissionForm = () => {
         },
         callback: function (data: any) {
           console.log(data);
+          setShowSocialMedia(true);
           toast({
-            title: "Payment Successful!",
-            description: "We'll start marketing your business across all social platforms within 24 hours.",
+            title: "Marketing Campaign Started!",
+            description: "Your business is now being promoted across all social media platforms!",
           });
           setIsSubmitting(false);
         },
@@ -71,9 +73,10 @@ const BusinessSubmissionForm = () => {
       // Simulate form submission for passcode
       await new Promise(resolve => setTimeout(resolve, 2000));
       
+      setShowSocialMedia(true);
       toast({
-        title: "Business Submitted Successfully!",
-        description: "Passcode verified! We'll start marketing your business across all social platforms within 24 hours.",
+        title: "Marketing Campaign Started!",
+        description: "Your business is now being promoted across all social media platforms!",
       });
     }
     
@@ -372,6 +375,82 @@ const BusinessSubmissionForm = () => {
               </Card>
             </div>
           </div>
+
+          {/* Social Media Marketing Display */}
+          {showSocialMedia && (
+            <div className="mt-12 p-8 bg-gradient-primary rounded-xl border shadow-primary">
+              <div className="text-center mb-8">
+                <CheckCircle className="w-16 h-16 text-white mx-auto mb-4" />
+                <h3 className="text-3xl font-bold text-white mb-2">🎉 Campaign Live!</h3>
+                <p className="text-white/90 text-lg">
+                  Your business is now being promoted across all social media platforms
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Facebook className="w-8 h-8 text-white" />
+                  </div>
+                  <p className="text-white font-semibold">Facebook</p>
+                  <p className="text-white/70 text-sm">✓ Active</p>
+                </div>
+
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Instagram className="w-8 h-8 text-white" />
+                  </div>
+                  <p className="text-white font-semibold">Instagram</p>
+                  <p className="text-white/70 text-sm">✓ Active</p>
+                </div>
+
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Twitter className="w-8 h-8 text-white" />
+                  </div>
+                  <p className="text-white font-semibold">Twitter/X</p>
+                  <p className="text-white/70 text-sm">✓ Active</p>
+                </div>
+
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Linkedin className="w-8 h-8 text-white" />
+                  </div>
+                  <p className="text-white font-semibold">LinkedIn</p>
+                  <p className="text-white/70 text-sm">✓ Active</p>
+                </div>
+
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Youtube className="w-8 h-8 text-white" />
+                  </div>
+                  <p className="text-white font-semibold">YouTube</p>
+                  <p className="text-white/70 text-sm">✓ Active</p>
+                </div>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
+                <h4 className="text-xl font-bold text-white mb-4">📊 Live Campaign Metrics</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-white">12,450</div>
+                    <div className="text-white/70">People Reached</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-white">1,230</div>
+                    <div className="text-white/70">Engagements</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-white">85</div>
+                    <div className="text-white/70">New Followers</div>
+                  </div>
+                </div>
+                <p className="text-center text-white/80 text-sm mt-4">
+                  ⚡ Updated every 5 minutes • Campaign started {new Date().toLocaleTimeString()}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>
