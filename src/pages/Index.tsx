@@ -1,12 +1,17 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import MarketingHero from "@/components/MarketingHero";
+import SocialMediaShowcase from "@/components/SocialMediaShowcase";
+import BusinessSubmissionForm from "@/components/BusinessSubmissionForm";
+import ReferralSystem from "@/components/ReferralSystem";
+import BusinessListings from "@/components/BusinessListings";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen">
+      <MarketingHero />
+      <SocialMediaShowcase />
+      <BusinessSubmissionForm />
+      <BusinessListings />
+      <ReferralSystem />
     </div>
   );
 };
