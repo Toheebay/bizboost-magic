@@ -90,6 +90,9 @@ const Footer = () => {
               <Link to="/privacy" className="hover:text-primary transition-colors">
                 Privacy Policy
               </Link>
+              <Link to="/data-deletion" className="hover:text-primary transition-colors">
+                Data Deletion
+              </Link>
             </div>
             <p>&copy; 2024 BizBoost Marketing. All rights reserved. Built with ❤️ for Nigerian businesses.</p>
           </div>
