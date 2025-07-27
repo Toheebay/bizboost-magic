@@ -123,6 +123,20 @@ const BusinessSubmissionForm = () => {
                     />
                   </div>
 
+                  <div>
+                    <Label htmlFor="passcode">Access Passcode *</Label>
+                    <Input 
+                      id="passcode" 
+                      placeholder="Enter your passcode to unlock marketing services" 
+                      type="password"
+                      required
+                      className="mt-2"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Contact us for your access passcode: +2347067412852
+                    </p>
+                  </div>
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="budget">Monthly Budget (Optional)</Label>
@@ -167,7 +181,7 @@ const BusinessSubmissionForm = () => {
                     ) : (
                       <>
                         <Zap className="w-5 h-5 mr-2" />
-                        Start Marketing Campaign - ₦1,200
+                        Activate Marketing Services
                       </>
                     )}
                   </Button>
@@ -218,7 +232,15 @@ const BusinessSubmissionForm = () => {
                   <p className="text-sm text-muted-foreground mb-3">
                     Earn ₦200 for every successful referral!
                   </p>
-                  <Button variant="outline" size="sm" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full"
+                    onClick={() => {
+                      const referralSection = document.getElementById('referral-section');
+                      referralSection?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
                     Get Referral Link
                   </Button>
                 </CardContent>

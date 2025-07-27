@@ -3,6 +3,7 @@ import SocialMediaShowcase from "@/components/SocialMediaShowcase";
 import BusinessSubmissionForm from "@/components/BusinessSubmissionForm";
 import ReferralSystem from "@/components/ReferralSystem";
 import BusinessListings from "@/components/BusinessListings";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
@@ -12,6 +13,7 @@ const Index = () => {
       <BusinessSubmissionForm />
       <BusinessListings />
       <ReferralSystem />
+      <Footer />
     </div>
   );
 };
