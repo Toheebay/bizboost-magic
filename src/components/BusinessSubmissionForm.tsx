@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, Zap, Star, TrendingUp, Facebook, Twitter, Linkedin, Instagram, Youtube, CheckCircle } from "lucide-react";
+import { Upload, Zap, Star, TrendingUp, Facebook, Twitter, Linkedin, Instagram, Youtube, CheckCircle, MessageCircle } from "lucide-react";
 
 const BusinessSubmissionForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -86,7 +86,7 @@ const BusinessSubmissionForm = () => {
   };
 
   const postToSocialMedia = async (businessName: string, description: string) => {
-    const platforms = ['twitter', 'facebook'];
+    const platforms = ['twitter', 'facebook', 'whatsapp'];
     const content = `Check out this amazing business: ${description}`;
 
     for (const platform of platforms) {
@@ -465,6 +465,14 @@ const BusinessSubmissionForm = () => {
                     <Youtube className="w-8 h-8 text-white" />
                   </div>
                   <p className="text-white font-semibold">YouTube</p>
+                  <p className="text-white/70 text-sm">✓ Active</p>
+                </div>
+
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <MessageCircle className="w-8 h-8 text-white" />
+                  </div>
+                  <p className="text-white font-semibold">WhatsApp</p>
                   <p className="text-white/70 text-sm">✓ Active</p>
                 </div>
               </div>

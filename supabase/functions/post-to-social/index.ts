@@ -17,6 +17,9 @@ const TWITTER_ACCESS_TOKEN_SECRET = Deno.env.get("TWITTER_ACCESS_SECRET")?.trim(
 // Facebook API credentials
 const FACEBOOK_ACCESS_TOKEN = Deno.env.get("FACEBOOK_ACCESS_TOKEN")?.trim();
 
+// WhatsApp API credentials
+const WHATSAPP_ACCESS_TOKEN = Deno.env.get("WHATSAPP_ACCESS_TOKEN")?.trim();
+
 function validateTwitterCredentials() {
   if (!TWITTER_API_KEY || !TWITTER_API_SECRET || !TWITTER_ACCESS_TOKEN || !TWITTER_ACCESS_TOKEN_SECRET) {
     throw new Error("Missing Twitter API credentials");
@@ -126,13 +129,45 @@ async function postToFacebook(message: string): Promise<any> {
   return JSON.parse(responseText);
 }
 
+async function postToWhatsApp(message: string, phoneNumber: string): Promise<any> {
+  if (!WHATSAPP_ACCESS_TOKEN) {
+    throw new Error("Missing WhatsApp access token");
+  }
+
+  const url = `https://graph.facebook.com/v17.0/me/messages`;
+  
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      messaging_product: 'whatsapp',
+      to: phoneNumber,
+      type: 'text',
+      text: {
+        body: message
+      }
+    }),
+  });
+
+  const responseText = await response.text();
+  
+  if (!response.ok) {
+    throw new Error(`WhatsApp API error: ${response.status} - ${responseText}`);
+  }
+
+  return JSON.parse(responseText);
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { platform, content, businessName } = await req.json();
+    const { platform, content, businessName, phoneNumber } = await req.json();
     
     if (!platform || !content || !businessName) {
       throw new Error("Missing required fields: platform, content, businessName");
@@ -148,6 +183,12 @@ serve(async (req) => {
         break;
       case 'facebook':
         result = await postToFacebook(message);
+        break;
+      case 'whatsapp':
+        if (!phoneNumber) {
+          throw new Error("Phone number is required for WhatsApp messaging");
+        }
+        result = await postToWhatsApp(message, phoneNumber);
         break;
       default:
         throw new Error(`Unsupported platform: ${platform}`);
