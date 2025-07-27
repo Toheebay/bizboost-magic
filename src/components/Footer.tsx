@@ -1,4 +1,5 @@
 import { Phone, Mail, Linkedin, Facebook, Twitter, Instagram, MessageCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -82,6 +83,14 @@ const Footer = () => {
           </div>
 
           <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
+            <div className="flex justify-center gap-6 mb-4">
+              <Link to="/terms" className="hover:text-primary transition-colors">
+                Terms of Service
+              </Link>
+              <Link to="/privacy" className="hover:text-primary transition-colors">
+                Privacy Policy
+              </Link>
+            </div>
             <p>&copy; 2024 BizBoost Marketing. All rights reserved. Built with ❤️ for Nigerian businesses.</p>
           </div>
         </div>
