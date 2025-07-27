@@ -77,12 +77,54 @@ function generateTwitterOAuthHeader(method: string, url: string): string {
     .join(", ");
 }
 
-async function postToTwitter(text: string): Promise<any> {
+async function postToTwitter(text: string, mediaUrls?: string[]): Promise<any> {
   validateTwitterCredentials();
+  
+  let mediaIds = [];
+  
+  // Upload media if provided
+  if (mediaUrls && mediaUrls.length > 0) {
+    for (const mediaUrl of mediaUrls) {
+      try {
+        // Download media first
+        const mediaResponse = await fetch(mediaUrl);
+        const mediaBuffer = await mediaResponse.arrayBuffer();
+        const mediaType = mediaResponse.headers.get('content-type') || 'image/jpeg';
+        
+        // Upload media to Twitter
+        const uploadUrl = "https://upload.twitter.com/1.1/media/upload.json";
+        const uploadMethod = "POST";
+        const uploadOauthHeader = generateTwitterOAuthHeader(uploadMethod, uploadUrl);
+        
+        const formData = new FormData();
+        formData.append('media', new Blob([mediaBuffer], { type: mediaType }));
+        
+        const uploadResponse = await fetch(uploadUrl, {
+          method: uploadMethod,
+          headers: {
+            Authorization: uploadOauthHeader,
+          },
+          body: formData,
+        });
+        
+        const uploadResult = await uploadResponse.json();
+        if (uploadResult.media_id_string) {
+          mediaIds.push(uploadResult.media_id_string);
+        }
+      } catch (error) {
+        console.error('Error uploading media to Twitter:', error);
+      }
+    }
+  }
   
   const url = "https://api.x.com/2/tweets";
   const method = "POST";
   const oauthHeader = generateTwitterOAuthHeader(method, url);
+
+  const tweetData: any = { text };
+  if (mediaIds.length > 0) {
+    tweetData.media = { media_ids: mediaIds };
+  }
 
   const response = await fetch(url, {
     method: method,
@@ -90,7 +132,7 @@ async function postToTwitter(text: string): Promise<any> {
       Authorization: oauthHeader,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ text }),
+    body: JSON.stringify(tweetData),
   });
 
   const responseText = await response.text();
@@ -102,11 +144,76 @@ async function postToTwitter(text: string): Promise<any> {
   return JSON.parse(responseText);
 }
 
-async function postToFacebook(message: string): Promise<any> {
+async function postToFacebook(message: string, mediaUrls?: string[]): Promise<any> {
   if (!FACEBOOK_ACCESS_TOKEN) {
     throw new Error("Missing Facebook access token");
   }
 
+  // If media is provided, use the photo/video endpoint
+  if (mediaUrls && mediaUrls.length > 0) {
+    const mediaUrl = mediaUrls[0]; // Facebook allows one media per post via this method
+    const mediaResponse = await fetch(mediaUrl);
+    const contentType = mediaResponse.headers.get('content-type') || '';
+    
+    let endpoint = '';
+    let mediaField = '';
+    
+    if (contentType.startsWith('video/')) {
+      endpoint = 'https://graph.facebook.com/me/videos';
+      mediaField = 'source';
+    } else {
+      endpoint = 'https://graph.facebook.com/me/photos';
+      mediaField = 'url';
+    }
+    
+    const postData: any = {
+      message,
+      access_token: FACEBOOK_ACCESS_TOKEN,
+    };
+    
+    if (contentType.startsWith('video/')) {
+      // For videos, we need to upload the file
+      const videoBuffer = await mediaResponse.arrayBuffer();
+      const formData = new FormData();
+      formData.append('source', new Blob([videoBuffer], { type: contentType }));
+      formData.append('description', message);
+      formData.append('access_token', FACEBOOK_ACCESS_TOKEN);
+      
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        body: formData,
+      });
+      
+      const responseText = await response.text();
+      
+      if (!response.ok) {
+        throw new Error(`Facebook API error: ${response.status} - ${responseText}`);
+      }
+      
+      return JSON.parse(responseText);
+    } else {
+      // For images, we can use URL
+      postData[mediaField] = mediaUrl;
+      
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+      });
+      
+      const responseText = await response.text();
+      
+      if (!response.ok) {
+        throw new Error(`Facebook API error: ${response.status} - ${responseText}`);
+      }
+      
+      return JSON.parse(responseText);
+    }
+  }
+
+  // Text-only post
   const url = `https://graph.facebook.com/me/feed`;
   
   const response = await fetch(url, {
@@ -129,13 +236,53 @@ async function postToFacebook(message: string): Promise<any> {
   return JSON.parse(responseText);
 }
 
-async function postToWhatsApp(message: string, phoneNumber: string): Promise<any> {
+async function postToWhatsApp(message: string, phoneNumber: string, mediaUrls?: string[]): Promise<any> {
   if (!WHATSAPP_ACCESS_TOKEN) {
     throw new Error("Missing WhatsApp access token");
   }
 
   const url = `https://graph.facebook.com/v17.0/me/messages`;
   
+  // Send media if provided
+  if (mediaUrls && mediaUrls.length > 0) {
+    const mediaUrl = mediaUrls[0]; // WhatsApp supports one media per message
+    const mediaResponse = await fetch(mediaUrl);
+    const contentType = mediaResponse.headers.get('content-type') || '';
+    
+    let messageType = 'image';
+    if (contentType.startsWith('video/')) {
+      messageType = 'video';
+    }
+    
+    const messageData = {
+      messaging_product: 'whatsapp',
+      to: phoneNumber,
+      type: messageType,
+      [messageType]: {
+        link: mediaUrl,
+        caption: message
+      }
+    };
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(messageData),
+    });
+
+    const responseText = await response.text();
+    
+    if (!response.ok) {
+      throw new Error(`WhatsApp API error: ${response.status} - ${responseText}`);
+    }
+
+    return JSON.parse(responseText);
+  }
+  
+  // Text-only message
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -167,7 +314,7 @@ serve(async (req) => {
   }
 
   try {
-    const { platform, content, businessName, phoneNumber } = await req.json();
+    const { platform, content, businessName, phoneNumber, mediaUrls } = await req.json();
     
     if (!platform || !content || !businessName) {
       throw new Error("Missing required fields: platform, content, businessName");
@@ -179,16 +326,16 @@ serve(async (req) => {
     
     switch (platform.toLowerCase()) {
       case 'twitter':
-        result = await postToTwitter(message);
+        result = await postToTwitter(message, mediaUrls);
         break;
       case 'facebook':
-        result = await postToFacebook(message);
+        result = await postToFacebook(message, mediaUrls);
         break;
       case 'whatsapp':
         if (!phoneNumber) {
           throw new Error("Phone number is required for WhatsApp messaging");
         }
-        result = await postToWhatsApp(message, phoneNumber);
+        result = await postToWhatsApp(message, phoneNumber, mediaUrls);
         break;
       default:
         throw new Error(`Unsupported platform: ${platform}`);

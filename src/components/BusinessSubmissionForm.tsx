@@ -13,6 +13,7 @@ const BusinessSubmissionForm = () => {
   const [paymentMethod, setPaymentMethod] = useState<"premium" | "passcode">("premium");
   const [passcode, setPasscode] = useState("");
   const [showSocialMedia, setShowSocialMedia] = useState(false);
+  const [mediaFiles, setMediaFiles] = useState<File[]>([]);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -85,22 +86,46 @@ const BusinessSubmissionForm = () => {
     setIsSubmitting(false);
   };
 
+  const uploadMediaFiles = async () => {
+    const mediaUrls = [];
+    
+    for (const file of mediaFiles) {
+      try {
+        // Create a temporary URL for the file
+        const fileUrl = URL.createObjectURL(file);
+        mediaUrls.push(fileUrl);
+      } catch (error) {
+        console.error('Error processing media file:', error);
+      }
+    }
+    
+    return mediaUrls;
+  };
+
   const postToSocialMedia = async (businessName: string, description: string) => {
     const platforms = ['twitter', 'facebook', 'whatsapp'];
     const content = `Check out this amazing business: ${description}`;
+    const mediaUrls = await uploadMediaFiles();
 
     for (const platform of platforms) {
       try {
+        const requestBody: any = {
+          platform,
+          content,
+          businessName,
+          mediaUrls: mediaUrls.length > 0 ? mediaUrls : undefined,
+        };
+
+        if (platform === 'whatsapp') {
+          requestBody.phoneNumber = '+1234567890'; // Default number for demo
+        }
+
         const response = await fetch('https://gluzzrbvqogiwvqdmdxh.supabase.co/functions/v1/post-to-social', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            platform,
-            content,
-            businessName,
-          }),
+          body: JSON.stringify(requestBody),
         });
 
         const result = await response.json();
@@ -109,7 +134,7 @@ const BusinessSubmissionForm = () => {
         if (result.success) {
           toast({
             title: `Posted to ${platform}!`,
-            description: `Successfully shared your business on ${platform}`,
+            description: `Successfully shared your business on ${platform} ${mediaUrls.length > 0 ? 'with media' : ''}`,
           });
         }
       } catch (error) {
@@ -224,14 +249,43 @@ const BusinessSubmissionForm = () => {
                     />
                   </div>
 
-                  <div>
-                    <Label htmlFor="goals">Marketing Goals</Label>
-                    <Textarea 
-                      id="goals" 
-                      placeholder="What do you want to achieve? (e.g., increase brand awareness, drive sales, get more customers)"
-                      className="mt-2"
-                    />
-                  </div>
+                   <div>
+                     <Label htmlFor="goals">Marketing Goals</Label>
+                     <Textarea 
+                       id="goals" 
+                       placeholder="What do you want to achieve? (e.g., increase brand awareness, drive sales, get more customers)"
+                       className="mt-2"
+                     />
+                   </div>
+
+                   <div className="space-y-2">
+                     <Label className="font-medium">Upload Images/Videos (Optional)</Label>
+                     <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+                       <input
+                         type="file"
+                         accept="image/*,video/*"
+                         multiple
+                         onChange={(e) => {
+                           const files = Array.from(e.target.files || []);
+                           setMediaFiles(files);
+                         }}
+                         className="hidden"
+                         id="media-upload"
+                       />
+                       <label htmlFor="media-upload" className="cursor-pointer">
+                         <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+                         <p className="text-foreground">
+                           {mediaFiles.length > 0 
+                             ? `${mediaFiles.length} file(s) selected` 
+                             : 'Click to upload images or videos for social media'
+                           }
+                         </p>
+                         <p className="text-muted-foreground text-sm mt-1">
+                           Supports: JPG, PNG, MP4, MOV (Max 10MB each)
+                         </p>
+                       </label>
+                     </div>
+                   </div>
 
                   {/* Payment Method Selection */}
                   <div className="space-y-4 p-6 bg-gradient-card rounded-lg border">
