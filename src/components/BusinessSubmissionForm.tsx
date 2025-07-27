@@ -18,6 +18,44 @@ const BusinessSubmissionForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
+    // Handle premium payment with Flutterwave
+    if (paymentMethod === "premium") {
+      const form = e.target as HTMLFormElement;
+      const formData = new FormData(form);
+      const businessName = formData.get("businessName") as string;
+      const email = formData.get("email") || "customer@business.com";
+      
+      // @ts-ignore - FlutterwaveCheckout is loaded globally
+      FlutterwaveCheckout({
+        public_key: "FLWPUBK-3d0e062fa50b5b538affc64535245178-X",
+        tx_ref: "tx-" + Date.now(),
+        amount: 1200,
+        currency: "NGN",
+        payment_options: "card,ussd,banktransfer",
+        customer: {
+          email: email,
+          name: businessName || "Business Owner",
+        },
+        callback: function (data: any) {
+          console.log(data);
+          toast({
+            title: "Payment Successful!",
+            description: "We'll start marketing your business across all social platforms within 24 hours.",
+          });
+          setIsSubmitting(false);
+        },
+        onclose: function () {
+          setIsSubmitting(false);
+        },
+        customizations: {
+          title: "Business Marketing Payment",
+          description: "Marketing Package - ₦1,200",
+          logo: "/lovable-uploads/e3c3d35a-5bf6-4bf0-83ea-50eb0f9149c8.png",
+        },
+      });
+      return;
+    }
+    
     // Validate passcode if passcode method is selected
     if (paymentMethod === "passcode") {
       if (passcode !== "AADEBAYOaadebayo12") {
@@ -29,17 +67,15 @@ const BusinessSubmissionForm = () => {
         setIsSubmitting(false);
         return;
       }
+      
+      // Simulate form submission for passcode
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      toast({
+        title: "Business Submitted Successfully!",
+        description: "Passcode verified! We'll start marketing your business across all social platforms within 24 hours.",
+      });
     }
-    
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    toast({
-      title: "Business Submitted Successfully!",
-      description: paymentMethod === "passcode" 
-        ? "Passcode verified! We'll start marketing your business across all social platforms within 24 hours."
-        : "Payment processed! We'll start marketing your business across all social platforms within 24 hours.",
-    });
     
     setIsSubmitting(false);
   };
@@ -72,12 +108,13 @@ const BusinessSubmissionForm = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="businessName">Business Name *</Label>
-                      <Input 
-                        id="businessName" 
-                        placeholder="Your Business Name" 
-                        required 
-                        className="mt-2"
-                      />
+                       <Input 
+                         id="businessName" 
+                         name="businessName"
+                         placeholder="Your Business Name" 
+                         required 
+                         className="mt-2"
+                       />
                     </div>
                     <div>
                       <Label htmlFor="industry">Industry *</Label>
@@ -109,16 +146,29 @@ const BusinessSubmissionForm = () => {
                         className="mt-2"
                       />
                     </div>
-                    <div>
-                      <Label htmlFor="phone">Phone Number *</Label>
-                      <Input 
-                        id="phone" 
-                        placeholder="+234 800 000 0000" 
-                        type="tel"
-                        required
-                        className="mt-2"
-                      />
-                    </div>
+                     <div>
+                       <Label htmlFor="phone">Phone Number *</Label>
+                       <Input 
+                         id="phone" 
+                         name="phone"
+                         placeholder="+234 800 000 0000" 
+                         type="tel"
+                         required
+                         className="mt-2"
+                       />
+                     </div>
+                   </div>
+
+                   <div>
+                     <Label htmlFor="email">Email Address *</Label>
+                     <Input 
+                       id="email" 
+                       name="email"
+                       placeholder="your@email.com" 
+                       type="email"
+                       required
+                       className="mt-2"
+                     />
                   </div>
 
                   <div>
