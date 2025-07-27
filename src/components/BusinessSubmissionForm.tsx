@@ -10,18 +10,35 @@ import { Upload, Zap, Star, TrendingUp } from "lucide-react";
 
 const BusinessSubmissionForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<"premium" | "passcode">("premium");
+  const [passcode, setPasscode] = useState("");
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
+    // Validate passcode if passcode method is selected
+    if (paymentMethod === "passcode") {
+      if (passcode !== "AADEBAYOaadebayo12") {
+        toast({
+          title: "Invalid Passcode",
+          description: "Please enter the correct passcode or choose premium payment.",
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+    }
+    
     // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 2000));
     
     toast({
       title: "Business Submitted Successfully!",
-      description: "We'll start marketing your business across all social platforms within 24 hours.",
+      description: paymentMethod === "passcode" 
+        ? "Passcode verified! We'll start marketing your business across all social platforms within 24 hours."
+        : "Payment processed! We'll start marketing your business across all social platforms within 24 hours.",
     });
     
     setIsSubmitting(false);
@@ -123,18 +140,76 @@ const BusinessSubmissionForm = () => {
                     />
                   </div>
 
-                  <div>
-                    <Label htmlFor="passcode">Access Passcode *</Label>
-                    <Input 
-                      id="passcode" 
-                      placeholder="Enter your passcode to unlock marketing services" 
-                      type="password"
-                      required
-                      className="mt-2"
-                    />
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Contact us for your access passcode: +2347067412852
-                    </p>
+                  {/* Payment Method Selection */}
+                  <div className="space-y-4 p-6 bg-gradient-card rounded-lg border">
+                    <Label className="text-base font-semibold">Choose Payment Method</Label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div 
+                        className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                          paymentMethod === "premium" 
+                            ? "border-primary bg-primary/5" 
+                            : "border-muted hover:border-primary/50"
+                        }`}
+                        onClick={() => setPaymentMethod("premium")}
+                      >
+                        <div className="flex items-center gap-3">
+                          <input 
+                            type="radio" 
+                            name="paymentMethod" 
+                            value="premium" 
+                            checked={paymentMethod === "premium"}
+                            onChange={(e) => setPaymentMethod(e.target.value as "premium" | "passcode")}
+                            className="text-primary"
+                          />
+                          <div>
+                            <div className="font-semibold">Premium Payment</div>
+                            <div className="text-sm text-muted-foreground">₦1,200 - Full marketing package</div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div 
+                        className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                          paymentMethod === "passcode" 
+                            ? "border-primary bg-primary/5" 
+                            : "border-muted hover:border-primary/50"
+                        }`}
+                        onClick={() => setPaymentMethod("passcode")}
+                      >
+                        <div className="flex items-center gap-3">
+                          <input 
+                            type="radio" 
+                            name="paymentMethod" 
+                            value="passcode" 
+                            checked={paymentMethod === "passcode"}
+                            onChange={(e) => setPaymentMethod(e.target.value as "premium" | "passcode")}
+                            className="text-primary"
+                          />
+                          <div>
+                            <div className="font-semibold">Access Passcode</div>
+                            <div className="text-sm text-muted-foreground">Special access code</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {paymentMethod === "passcode" && (
+                      <div className="mt-4">
+                        <Label htmlFor="passcode">Enter Access Passcode *</Label>
+                        <Input 
+                          id="passcode" 
+                          placeholder="Enter your special access passcode" 
+                          type="password"
+                          value={passcode}
+                          onChange={(e) => setPasscode(e.target.value)}
+                          required={paymentMethod === "passcode"}
+                          className="mt-2"
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Contact us for your access passcode: +2347067412852
+                        </p>
+                      </div>
+                    )}
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -181,7 +256,7 @@ const BusinessSubmissionForm = () => {
                     ) : (
                       <>
                         <Zap className="w-5 h-5 mr-2" />
-                        Activate Marketing Services
+                        {paymentMethod === "premium" ? "Start Marketing Campaign - ₦1,200" : "Activate with Passcode"}
                       </>
                     )}
                   </Button>
