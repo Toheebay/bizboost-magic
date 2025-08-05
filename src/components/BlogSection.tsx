@@ -3,8 +3,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar, Clock, Eye, Share2, TrendingUp, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import WhatsAppMarketingArticle from "./blog/WhatsAppMarketingArticle";
+import AIContentCreationArticle from "./blog/AIContentCreationArticle";
 
 const BlogSection = () => {
+  const [currentView, setCurrentView] = useState<'list' | 'whatsapp' | 'ai-content'>('list');
   const featuredPost = {
     id: 1,
     title: "The Complete Guide to Social Media Marketing for Nigerian Businesses in 2024",
@@ -105,6 +109,14 @@ const BlogSection = () => {
     { name: "Facebook", count: 3 }
   ];
 
+  if (currentView === 'whatsapp') {
+    return <WhatsAppMarketingArticle onBack={() => setCurrentView('list')} />;
+  }
+
+  if (currentView === 'ai-content') {
+    return <AIContentCreationArticle onBack={() => setCurrentView('list')} />;
+  }
+
   return (
     <section className="py-20 bg-background">
       <div className="container mx-auto px-4">
@@ -168,7 +180,10 @@ const BlogSection = () => {
                   </div>
                 </div>
 
-                <Button className="w-fit group">
+                <Button 
+                  className="w-fit group"
+                  onClick={() => setCurrentView('whatsapp')}
+                >
                   Read Full Article
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
@@ -200,7 +215,14 @@ const BlogSection = () => {
             <div className="lg:col-span-3">
               <div className="grid md:grid-cols-2 gap-6 mb-8">
                 {blogPosts.map((post) => (
-                  <Card key={post.id} className="shadow-card hover:shadow-primary transition-all duration-300 group cursor-pointer">
+                  <Card 
+                    key={post.id} 
+                    className="shadow-card hover:shadow-primary transition-all duration-300 group cursor-pointer"
+                    onClick={() => {
+                      if (post.id === 2) setCurrentView('whatsapp');
+                      else if (post.id === 3) setCurrentView('ai-content');
+                    }}
+                  >
                     <div className="relative h-48 overflow-hidden rounded-t-lg">
                       <img 
                         src={post.image}
