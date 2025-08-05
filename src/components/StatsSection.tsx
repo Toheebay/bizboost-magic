@@ -1,5 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { 
   BarChart3, 
   Users, 
@@ -12,10 +14,16 @@ import {
   Star,
   Target,
   Award,
-  Heart
+  Heart,
+  ChevronDown,
+  Calendar,
+  MapPin,
+  Shield
 } from "lucide-react";
+import { useState } from "react";
 
 const StatsSection = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
   const mainStats = [
     {
       icon: Users,
@@ -203,7 +211,7 @@ const StatsSection = () => {
           </div>
 
           {/* Real-time Counter Effect */}
-          <Card className="bg-gradient-hero text-white shadow-glow">
+          <Card className="bg-gradient-hero text-white shadow-glow mb-16">
             <CardContent className="p-8 text-center">
               <h3 className="text-2xl font-bold mb-6">Live Platform Activity</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -229,6 +237,167 @@ const StatsSection = () => {
               </p>
             </CardContent>
           </Card>
+
+          {/* Expandable Content */}
+          <Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
+            <div className="text-center mb-8">
+              <CollapsibleTrigger asChild>
+                <Button variant="outline" size="lg" className="group">
+                  {isExpanded ? "Show Less" : "Read More Detailed Analytics"}
+                  <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+                </Button>
+              </CollapsibleTrigger>
+            </div>
+            
+            <CollapsibleContent className="space-y-12">
+              {/* Geographical Performance */}
+              <Card className="shadow-card">
+                <CardContent className="p-8">
+                  <h3 className="text-2xl font-bold text-center mb-8">Performance by Nigerian States</h3>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[
+                      { state: "Lagos", businesses: "3,200+", growth: "+280%", revenue: "₦850M" },
+                      { state: "Abuja", businesses: "1,800+", growth: "+320%", revenue: "₦520M" },
+                      { state: "Rivers", businesses: "1,200+", growth: "+200%", revenue: "₦380M" },
+                      { state: "Kano", businesses: "900+", growth: "+250%", revenue: "₦290M" },
+                      { state: "Oyo", businesses: "800+", growth: "+180%", revenue: "₦240M" },
+                      { state: "Delta", businesses: "650+", growth: "+220%", revenue: "₦180M" }
+                    ].map((location, index) => (
+                      <div key={index} className="p-6 rounded-lg bg-gradient-card border border-border">
+                        <div className="flex items-center gap-3 mb-4">
+                          <MapPin className="w-5 h-5 text-primary" />
+                          <h4 className="font-bold">{location.state}</h4>
+                        </div>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span>Active Businesses:</span>
+                            <span className="font-bold">{location.businesses}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Growth Rate:</span>
+                            <span className="font-bold text-green-600">{location.growth}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Total Revenue:</span>
+                            <span className="font-bold text-primary">{location.revenue}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Monthly Performance Trends */}
+              <Card className="shadow-card">
+                <CardContent className="p-8">
+                  <h3 className="text-2xl font-bold text-center mb-8">Monthly Performance Trends (2024)</h3>
+                  <div className="grid lg:grid-cols-2 gap-8">
+                    <div>
+                      <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
+                        <Calendar className="w-5 h-5 text-primary" />
+                        Revenue Growth by Month
+                      </h4>
+                      <div className="space-y-3">
+                        {[
+                          { month: "January", revenue: "₦280M", growth: "+45%" },
+                          { month: "February", revenue: "₦350M", growth: "+65%" },
+                          { month: "March", revenue: "₦420M", growth: "+78%" },
+                          { month: "April", revenue: "₦580M", growth: "+95%" },
+                          { month: "May", revenue: "₦720M", growth: "+120%" },
+                          { month: "June", revenue: "₦850M", growth: "+140%" }
+                        ].map((data, index) => (
+                          <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-gradient-card">
+                            <span className="font-medium">{data.month}</span>
+                            <div className="text-right">
+                              <div className="font-bold text-primary">{data.revenue}</div>
+                              <div className="text-xs text-green-600">{data.growth}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
+                        <Users className="w-5 h-5 text-primary" />
+                        New Business Acquisitions
+                      </h4>
+                      <div className="space-y-3">
+                        {[
+                          { month: "January", businesses: "850", percentage: "12%" },
+                          { month: "February", businesses: "1,200", percentage: "15%" },
+                          { month: "March", businesses: "1,450", percentage: "18%" },
+                          { month: "April", businesses: "1,800", percentage: "22%" },
+                          { month: "May", businesses: "2,200", percentage: "25%" },
+                          { month: "June", businesses: "2,500", percentage: "28%" }
+                        ].map((data, index) => (
+                          <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-gradient-card">
+                            <span className="font-medium">{data.month}</span>
+                            <div className="text-right">
+                              <div className="font-bold text-primary">{data.businesses}</div>
+                              <div className="text-xs text-blue-600">{data.percentage} market share</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Security & Reliability Stats */}
+              <Card className="shadow-card">
+                <CardContent className="p-8">
+                  <h3 className="text-2xl font-bold text-center mb-8">Platform Security & Reliability</h3>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="text-center p-6 rounded-lg bg-gradient-card">
+                      <Shield className="w-12 h-12 text-green-600 mx-auto mb-4" />
+                      <div className="text-3xl font-bold text-green-600 mb-2">99.98%</div>
+                      <div className="font-semibold mb-2">Uptime</div>
+                      <div className="text-xs text-muted-foreground">Last 12 months</div>
+                    </div>
+                    <div className="text-center p-6 rounded-lg bg-gradient-card">
+                      <Award className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+                      <div className="text-3xl font-bold text-blue-600 mb-2">ISO 27001</div>
+                      <div className="font-semibold mb-2">Certified</div>
+                      <div className="text-xs text-muted-foreground">Security standard</div>
+                    </div>
+                    <div className="text-center p-6 rounded-lg bg-gradient-card">
+                      <Clock className="w-12 h-12 text-purple-600 mx-auto mb-4" />
+                      <div className="text-3xl font-bold text-purple-600 mb-2">&lt; 200ms</div>
+                      <div className="font-semibold mb-2">Response Time</div>
+                      <div className="text-xs text-muted-foreground">Average API response</div>
+                    </div>
+                    <div className="text-center p-6 rounded-lg bg-gradient-card">
+                      <Heart className="w-12 h-12 text-red-600 mx-auto mb-4" />
+                      <div className="text-3xl font-bold text-red-600 mb-2">24/7</div>
+                      <div className="font-semibold mb-2">Monitoring</div>
+                      <div className="text-xs text-muted-foreground">Real-time alerts</div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-8 p-6 bg-gradient-hero text-white rounded-lg">
+                    <h4 className="text-lg font-bold mb-4 text-center">Enterprise-Grade Infrastructure</h4>
+                    <div className="grid md:grid-cols-3 gap-6 text-center">
+                      <div>
+                        <div className="text-2xl font-bold mb-2">256-bit</div>
+                        <div className="text-white/80 text-sm">SSL Encryption</div>
+                      </div>
+                      <div>
+                        <div className="text-2xl font-bold mb-2">GDPR</div>
+                        <div className="text-white/80 text-sm">Compliant</div>
+                      </div>
+                      <div>
+                        <div className="text-2xl font-bold mb-2">Multi-Cloud</div>
+                        <div className="text-white/80 text-sm">Architecture</div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </CollapsibleContent>
+          </Collapsible>
         </div>
       </div>
     </section>

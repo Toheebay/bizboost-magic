@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { 
   Calendar, 
   Clock, 
@@ -11,10 +12,16 @@ import {
   BarChart3,
   Users,
   ArrowRight,
-  Eye
+  Eye,
+  ChevronDown,
+  Bell,
+  Star,
+  Target
 } from "lucide-react";
+import { useState } from "react";
 
 const NewsSection = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
   const breakingNews = {
     title: "Major WhatsApp Business API Update Boosts Nigerian SME Reach by 300%",
     excerpt: "New features allowing multimedia campaigns and automated responses are revolutionizing how Nigerian businesses connect with customers.",
@@ -269,8 +276,8 @@ const NewsSection = () => {
                             <Clock className="w-3 h-3" />
                             {news.publishTime}
                           </div>
-                          <Button variant="ghost" size="sm">
-                            Read More
+                           <Button variant="ghost" size="sm">
+                            Read Full Article
                           </Button>
                         </div>
                       </CardContent>
@@ -347,6 +354,165 @@ const NewsSection = () => {
               ))}
             </div>
           </div>
+
+          {/* Expandable Content */}
+          <Collapsible open={isExpanded} onOpenChange={setIsExpanded} className="mb-16">
+            <div className="text-center mb-8">
+              <CollapsibleTrigger asChild>
+                <Button variant="outline" size="lg" className="group">
+                  {isExpanded ? "Show Less" : "Read More Industry Insights"}
+                  <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+                </Button>
+              </CollapsibleTrigger>
+            </div>
+            
+            <CollapsibleContent className="space-y-12">
+              {/* Expert Analysis Section */}
+              <Card className="shadow-card">
+                <CardContent className="p-8">
+                  <h3 className="text-2xl font-bold text-center mb-8">Expert Analysis: Marketing Landscape 2024</h3>
+                  
+                  <div className="grid lg:grid-cols-2 gap-8">
+                    <div className="space-y-6">
+                      <div className="p-6 rounded-lg bg-gradient-card border border-border">
+                        <div className="flex items-center gap-3 mb-4">
+                          <Bell className="w-6 h-6 text-primary" />
+                          <h4 className="text-lg font-bold">Key Insight: AI Revolution</h4>
+                        </div>
+                        <p className="text-muted-foreground mb-4">
+                          Businesses using AI-powered marketing tools are experiencing 3x higher engagement rates 
+                          and 250% better ROI compared to traditional methods. The early adopters in Nigeria are 
+                          already seeing massive competitive advantages.
+                        </p>
+                        <div className="grid grid-cols-3 gap-4 text-center">
+                          <div className="p-3 bg-gradient-primary text-white rounded-lg">
+                            <div className="text-2xl font-bold">300%</div>
+                            <div className="text-xs">Higher Engagement</div>
+                          </div>
+                          <div className="p-3 bg-gradient-success text-white rounded-lg">
+                            <div className="text-2xl font-bold">250%</div>
+                            <div className="text-xs">Better ROI</div>
+                          </div>
+                          <div className="p-3 bg-gradient-hero text-white rounded-lg">
+                            <div className="text-2xl font-bold">85%</div>
+                            <div className="text-xs">Time Saved</div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="p-6 rounded-lg bg-gradient-card border border-border">
+                        <div className="flex items-center gap-3 mb-4">
+                          <Target className="w-6 h-6 text-green-600" />
+                          <h4 className="text-lg font-bold">WhatsApp Business Growth</h4>
+                        </div>
+                        <p className="text-muted-foreground mb-4">
+                          WhatsApp Business API adoption in Nigeria has grown by 500% in the last 6 months. 
+                          Businesses report 80% faster customer response times and 60% higher conversion rates.
+                        </p>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span>API Adoption Growth:</span>
+                            <span className="font-bold text-green-600">+500%</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Response Time Improvement:</span>
+                            <span className="font-bold text-green-600">+80%</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Conversion Rate Increase:</span>
+                            <span className="font-bold text-green-600">+60%</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-6">
+                      <div className="p-6 rounded-lg bg-gradient-card border border-border">
+                        <div className="flex items-center gap-3 mb-4">
+                          <Star className="w-6 h-6 text-yellow-500" />
+                          <h4 className="text-lg font-bold">Social Commerce Boom</h4>
+                        </div>
+                        <p className="text-muted-foreground mb-4">
+                          Direct sales through social media platforms have increased by 400% in Nigeria. 
+                          Instagram Shopping, Facebook Marketplace, and TikTok Shop are driving this growth.
+                        </p>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="text-center p-3 bg-purple-100 dark:bg-purple-900 rounded-lg">
+                            <div className="text-lg font-bold text-purple-600">Instagram</div>
+                            <div className="text-xs">+450% sales</div>
+                          </div>
+                          <div className="text-center p-3 bg-blue-100 dark:bg-blue-900 rounded-lg">
+                            <div className="text-lg font-bold text-blue-600">Facebook</div>
+                            <div className="text-xs">+380% sales</div>
+                          </div>
+                          <div className="text-center p-3 bg-black text-white rounded-lg">
+                            <div className="text-lg font-bold">TikTok</div>
+                            <div className="text-xs">+520% sales</div>
+                          </div>
+                          <div className="text-center p-3 bg-red-100 dark:bg-red-900 rounded-lg">
+                            <div className="text-lg font-bold text-red-600">YouTube</div>
+                            <div className="text-xs">+280% sales</div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="p-6 rounded-lg bg-gradient-hero text-white">
+                        <h4 className="text-lg font-bold mb-4">Future Predictions 2024-2025</h4>
+                        <ul className="space-y-2 text-sm">
+                          <li className="flex items-start gap-2">
+                            <div className="w-2 h-2 bg-accent rounded-full mt-2"></div>
+                            <span>Video content will dominate with 70% of all social media marketing</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <div className="w-2 h-2 bg-accent rounded-full mt-2"></div>
+                            <span>AI chatbots will handle 90% of customer inquiries</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <div className="w-2 h-2 bg-accent rounded-full mt-2"></div>
+                            <span>Voice marketing will emerge as the next big trend</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <div className="w-2 h-2 bg-accent rounded-full mt-2"></div>
+                            <span>Micro-influencers will outperform mega-influencers by 300%</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Upcoming Changes Alert */}
+              <Card className="border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-950/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Bell className="w-6 h-6 text-orange-600" />
+                    <h3 className="text-xl font-bold text-orange-800 dark:text-orange-200">Upcoming Platform Changes Alert</h3>
+                  </div>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg">
+                      <Badge className="mb-2 bg-red-500 text-white">Critical</Badge>
+                      <h4 className="font-bold mb-2">Instagram Algorithm Update</h4>
+                      <p className="text-sm text-muted-foreground mb-2">Major changes to Reels distribution expected March 25th</p>
+                      <div className="text-xs text-orange-600 font-medium">Impact: High</div>
+                    </div>
+                    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg">
+                      <Badge className="mb-2 bg-yellow-500 text-white">Important</Badge>
+                      <h4 className="font-bold mb-2">WhatsApp Business Pricing</h4>
+                      <p className="text-sm text-muted-foreground mb-2">New pricing structure for API calls starting April 1st</p>
+                      <div className="text-xs text-orange-600 font-medium">Impact: Medium</div>
+                    </div>
+                    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg">
+                      <Badge className="mb-2 bg-blue-500 text-white">Update</Badge>
+                      <h4 className="font-bold mb-2">LinkedIn Ad Targeting</h4>
+                      <p className="text-sm text-muted-foreground mb-2">Enhanced audience targeting for African markets</p>
+                      <div className="text-xs text-orange-600 font-medium">Impact: Positive</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </CollapsibleContent>
+          </Collapsible>
 
           {/* Newsletter Signup */}
           <Card className="bg-gradient-hero text-white shadow-glow">

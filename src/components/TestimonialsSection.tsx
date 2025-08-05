@@ -1,9 +1,14 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Quote, Star, TrendingUp, Users } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Quote, Star, TrendingUp, Users, ChevronDown, Calendar, Award, Heart, MessageCircle } from "lucide-react";
+import { useState } from "react";
 
 const TestimonialsSection = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  
   const testimonials = [
     {
       id: 1,
@@ -173,7 +178,7 @@ const TestimonialsSection = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center mb-12">
             <div className="p-6">
               <div className="text-3xl font-bold text-primary mb-2">1000+</div>
               <div className="text-muted-foreground">Happy Clients</div>
@@ -191,6 +196,201 @@ const TestimonialsSection = () => {
               <div className="text-muted-foreground">Support Available</div>
             </div>
           </div>
+
+          {/* Expandable Content */}
+          <Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
+            <div className="text-center mb-8">
+              <CollapsibleTrigger asChild>
+                <Button variant="outline" size="lg" className="group">
+                  {isExpanded ? "Show Less" : "Read More Success Stories"}
+                  <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+                </Button>
+              </CollapsibleTrigger>
+            </div>
+            
+            <CollapsibleContent className="space-y-12">
+              {/* Detailed Client Journeys */}
+              <div className="grid lg:grid-cols-2 gap-8">
+                <Card className="shadow-card">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-4 mb-6">
+                      <Avatar className="w-16 h-16">
+                        <AvatarImage src="/placeholder.svg" />
+                        <AvatarFallback>AJ</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <h3 className="text-xl font-bold">Adebayo Johnson's Journey</h3>
+                        <Badge className="bg-gradient-primary text-white">CEO Spotlight</Badge>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-3 gap-4 p-4 bg-gradient-card rounded-lg">
+                        <div className="text-center">
+                          <Calendar className="w-6 h-6 text-primary mx-auto mb-2" />
+                          <div className="text-sm font-bold">Before</div>
+                          <div className="text-xs text-muted-foreground">₦2M/month</div>
+                        </div>
+                        <div className="text-center">
+                          <TrendingUp className="w-6 h-6 text-green-600 mx-auto mb-2" />
+                          <div className="text-sm font-bold">Growth</div>
+                          <div className="text-xs text-muted-foreground">3 months</div>
+                        </div>
+                        <div className="text-center">
+                          <Award className="w-6 h-6 text-yellow-500 mx-auto mb-2" />
+                          <div className="text-sm font-bold">After</div>
+                          <div className="text-xs text-muted-foreground">₦7M/month</div>
+                        </div>
+                      </div>
+                      
+                      <blockquote className="text-muted-foreground italic border-l-4 border-primary pl-4">
+                        "We started with just 2,000 Instagram followers and basic Facebook posts. The AI-generated content strategy transformed everything. Now we're getting 50+ orders daily through social media alone."
+                      </blockquote>
+                      
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span>Instagram Followers:</span>
+                          <span className="font-bold">2K → 17K (+750%)</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Monthly Orders:</span>
+                          <span className="font-bold">50 → 1,500 (+2,900%)</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Customer Acquisition Cost:</span>
+                          <span className="font-bold">₦2,500 → ₦350 (-86%)</span>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="shadow-card">
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-4 mb-6">
+                      <Avatar className="w-16 h-16">
+                        <AvatarImage src="/placeholder.svg" />
+                        <AvatarFallback>SW</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <h3 className="text-xl font-bold">Sarah Williams' Transformation</h3>
+                        <Badge className="bg-gradient-success text-white">Restaurant Success</Badge>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-3 gap-4 p-4 bg-gradient-card rounded-lg">
+                        <div className="text-center">
+                          <MessageCircle className="w-6 h-6 text-green-600 mx-auto mb-2" />
+                          <div className="text-sm font-bold">WhatsApp</div>
+                          <div className="text-xs text-muted-foreground">5 → 150 daily orders</div>
+                        </div>
+                        <div className="text-center">
+                          <Heart className="w-6 h-6 text-red-500 mx-auto mb-2" />
+                          <div className="text-sm font-bold">Reviews</div>
+                          <div className="text-xs text-muted-foreground">3.2★ → 4.9★</div>
+                        </div>
+                        <div className="text-center">
+                          <Users className="w-6 h-6 text-blue-600 mx-auto mb-2" />
+                          <div className="text-sm font-bold">Staff</div>
+                          <div className="text-xs text-muted-foreground">3 → 12 employees</div>
+                        </div>
+                      </div>
+                      
+                      <blockquote className="text-muted-foreground italic border-l-4 border-green-500 pl-4">
+                        "The automated WhatsApp ordering system was a game-changer. Customers can now browse our menu, place orders, and make payments all through WhatsApp. We went from struggling to stay open to planning our second location."
+                      </blockquote>
+                      
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span>Daily Revenue:</span>
+                          <span className="font-bold">₦45K → ₦180K (+300%)</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Order Processing Time:</span>
+                          <span className="font-bold">15min → 3min (-80%)</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Customer Retention:</span>
+                          <span className="font-bold">30% → 85% (+183%)</span>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Industry Impact Statistics */}
+              <Card className="bg-gradient-hero text-white shadow-glow">
+                <CardContent className="p-8">
+                  <h3 className="text-2xl font-bold text-center mb-8">Real Impact Across Industries</h3>
+                  <div className="grid md:grid-cols-3 gap-8">
+                    <div className="text-center">
+                      <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <TrendingUp className="w-8 h-8" />
+                      </div>
+                      <div className="text-3xl font-bold mb-2">₦50B+</div>
+                      <div className="text-white/80">Total Client Revenue Generated</div>
+                      <div className="text-sm text-white/60 mt-2">From our marketing campaigns in 2024</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Users className="w-8 h-8" />
+                      </div>
+                      <div className="text-3xl font-bold mb-2">2.5M+</div>
+                      <div className="text-white/80">New Customers Acquired</div>
+                      <div className="text-sm text-white/60 mt-2">Through our client campaigns</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Award className="w-8 h-8" />
+                      </div>
+                      <div className="text-3xl font-bold mb-2">15</div>
+                      <div className="text-white/80">Industry Awards Won</div>
+                      <div className="text-sm text-white/60 mt-2">By our clients using our platform</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Methodology Behind Success */}
+              <Card className="shadow-card">
+                <CardContent className="p-8">
+                  <h3 className="text-2xl font-bold text-center mb-8">Our Proven Success Methodology</h3>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="text-center p-6 rounded-lg bg-gradient-card">
+                      <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-xl font-bold text-blue-600">1</span>
+                      </div>
+                      <h4 className="font-bold mb-2">AI Analysis</h4>
+                      <p className="text-sm text-muted-foreground">Deep analysis of your market, competitors, and audience behavior patterns</p>
+                    </div>
+                    <div className="text-center p-6 rounded-lg bg-gradient-card">
+                      <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-xl font-bold text-green-600">2</span>
+                      </div>
+                      <h4 className="font-bold mb-2">Strategy Creation</h4>
+                      <p className="text-sm text-muted-foreground">Custom marketing strategy designed specifically for your business goals</p>
+                    </div>
+                    <div className="text-center p-6 rounded-lg bg-gradient-card">
+                      <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-xl font-bold text-purple-600">3</span>
+                      </div>
+                      <h4 className="font-bold mb-2">Content Automation</h4>
+                      <p className="text-sm text-muted-foreground">AI-powered content creation and scheduling across all platforms</p>
+                    </div>
+                    <div className="text-center p-6 rounded-lg bg-gradient-card">
+                      <div className="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-xl font-bold text-red-600">4</span>
+                      </div>
+                      <h4 className="font-bold mb-2">Optimization</h4>
+                      <p className="text-sm text-muted-foreground">Continuous monitoring and optimization based on real-time performance data</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </CollapsibleContent>
+          </Collapsible>
         </div>
       </div>
     </section>
