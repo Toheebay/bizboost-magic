@@ -52,11 +52,27 @@ const MarketingHero = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="marketing" size="lg" className="group">
+              <Button 
+                variant="marketing" 
+                size="lg" 
+                className="group"
+                onClick={() => {
+                  const businessForm = document.getElementById('business-submission');
+                  businessForm?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
                 Start Marketing Now
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="border-white/30 text-white hover:bg-white/10"
+                onClick={() => {
+                  const testimonials = document.getElementById('testimonials');
+                  testimonials?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
                 View Success Stories
               </Button>
             </div>
