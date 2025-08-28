@@ -1,11 +1,11 @@
-import MarketingHero from "@/components/MarketingHero";
-import SocialMediaShowcase from "@/components/SocialMediaShowcase";
+import MentorshipHero from "@/components/MentorshipHero";
+import SkillsShowcase from "@/components/SkillsShowcase";
 import StatsSection from "@/components/StatsSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
-import BusinessSubmissionForm from "@/components/BusinessSubmissionForm";
+import MentorshipRequestForm from "@/components/MentorshipRequestForm";
 import BusinessListings from "@/components/BusinessListings";
-import BlogSection from "@/components/BlogSection";
-import NewsSection from "@/components/NewsSection";
+import WeeklyTipsSection from "@/components/WeeklyTipsSection";
+import ResourcesSection from "@/components/ResourcesSection";
 import CommunitySection from "@/components/CommunitySection";
 import ReferralSystem from "@/components/ReferralSystem";
 import Footer from "@/components/Footer";
@@ -13,14 +13,14 @@ import Footer from "@/components/Footer";
 const Index = () => {
   return (
     <div className="min-h-screen">
-      <MarketingHero />
-      <SocialMediaShowcase />
+      <MentorshipHero />
+      <SkillsShowcase />
       <StatsSection />
       <TestimonialsSection />
-      <BusinessSubmissionForm />
+      <MentorshipRequestForm />
       <BusinessListings />
-      <BlogSection />
-      <NewsSection />
+      <WeeklyTipsSection />
+      <ResourcesSection />
       <CommunitySection />
       <ReferralSystem />
       <Footer />

@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, BarChart3, Share2, Trophy, Users } from "lucide-react";
+import { ArrowRight, BookOpen, Code, Users, Award, Star, Palette } from "lucide-react";
 import heroImage from "@/assets/hero-marketing.jpg";
 
-const MarketingHero = () => {
+const MentorshipHero = () => {
   return (
     <section className="relative min-h-screen bg-gradient-hero overflow-hidden">
       {/* Background Elements */}
@@ -17,30 +17,30 @@ const MarketingHero = () => {
           <div className="space-y-8">
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 text-white border border-white/20">
-                <Trophy className="w-4 h-4 text-accent" />
-                <span className="text-sm font-medium">Premium Marketing Platform</span>
+                <Award className="w-4 h-4 text-accent" />
+                <span className="text-sm font-medium">Digital Mentorship Platform</span>
               </div>
               
               <h1 className="text-5xl lg:text-7xl font-bold text-white leading-tight">
-                Boost Your
+                Master Your
                 <span className="block bg-gradient-to-r from-accent to-accent-glow bg-clip-text text-transparent">
-                  Business
+                  Digital Skills
                 </span>
-                Across All Social Media
+                With Expert Mentors
               </h1>
               
               <p className="text-xl text-white/80 leading-relaxed max-w-lg">
-                Market your business on all major social platforms with our AI-powered system. 
-                Get guaranteed results, track performance, and earn with our referral program.
+                Get personalized mentorship in web development, design, marketing, and more. 
+                Learn from industry experts and accelerate your digital career journey.
               </p>
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6">
               {[
-                { icon: Users, label: "Active Users", value: "10K+" },
-                { icon: Share2, label: "Campaigns", value: "50K+" },
-                { icon: BarChart3, label: "Success Rate", value: "95%" }
+                { icon: Users, label: "Active Mentees", value: "2.5K+" },
+                { icon: BookOpen, label: "Skills Covered", value: "25+" },
+                { icon: Star, label: "Success Rate", value: "95%" }
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="text-center">
                   <Icon className="w-8 h-8 text-accent mx-auto mb-2" />
@@ -57,11 +57,11 @@ const MarketingHero = () => {
                 size="lg" 
                 className="group"
                 onClick={() => {
-                  const businessForm = document.getElementById('business-submission');
-                  businessForm?.scrollIntoView({ behavior: 'smooth' });
+                  const mentorshipForm = document.getElementById('mentorship-request');
+                  mentorshipForm?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
-                Start Marketing Now
+                Request Mentorship
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button 
@@ -77,16 +77,19 @@ const MarketingHero = () => {
               </Button>
             </div>
 
-            {/* Pricing Highlight */}
+            {/* Skills Highlight */}
             <Card className="bg-white/10 backdrop-blur-sm border-white/20 p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-white font-medium">Complete Marketing Package</div>
-                  <div className="text-white/70 text-sm">All platforms • Analytics • 24/7 Support</div>
+                  <div className="text-white font-medium">Digital Skills Covered</div>
+                  <div className="text-white/70 text-sm">Web Dev • Design • Marketing • SEO • More</div>
                 </div>
-                <div className="text-right">
-                  <div className="text-3xl font-bold text-accent">₦1,200</div>
-                  <div className="text-white/70 text-sm">One-time payment</div>
+                <div className="text-right flex items-center gap-2">
+                  <div className="flex gap-1">
+                    <Code className="w-6 h-6 text-accent" />
+                    <Palette className="w-6 h-6 text-accent" />
+                    <BookOpen className="w-6 h-6 text-accent" />
+                  </div>
                 </div>
               </div>
             </Card>
@@ -97,7 +100,7 @@ const MarketingHero = () => {
             <div className="relative rounded-2xl overflow-hidden shadow-glow">
               <img 
                 src={heroImage} 
-                alt="Marketing Success Dashboard" 
+                alt="Digital Mentorship Dashboard" 
                 className="w-full h-auto object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
@@ -107,11 +110,11 @@ const MarketingHero = () => {
             <Card className="absolute -top-4 -left-4 bg-white/95 backdrop-blur-sm p-4 shadow-card">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-success rounded-full flex items-center justify-center">
-                  <BarChart3 className="w-5 h-5 text-white" />
+                  <Award className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <div className="font-semibold text-sm">ROI Increase</div>
-                  <div className="text-accent font-bold">+250%</div>
+                  <div className="font-semibold text-sm">Skill Growth</div>
+                  <div className="text-accent font-bold">+300%</div>
                 </div>
               </div>
             </Card>
@@ -122,8 +125,8 @@ const MarketingHero = () => {
                   <Users className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <div className="font-semibold text-sm">New Customers</div>
-                  <div className="text-primary font-bold">+1,500</div>
+                  <div className="font-semibold text-sm">Active Mentees</div>
+                  <div className="text-primary font-bold">2,500+</div>
                 </div>
               </div>
             </Card>
@@ -134,4 +137,4 @@ const MarketingHero = () => {
   );
 };
 
-export default MarketingHero;
+export default MentorshipHero;

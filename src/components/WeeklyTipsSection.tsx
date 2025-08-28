@@ -11,102 +11,102 @@ const BlogSection = () => {
   const [currentView, setCurrentView] = useState<'list' | 'whatsapp' | 'ai-content'>('list');
   const featuredPost = {
     id: 1,
-    title: "The Complete Guide to Social Media Marketing for Nigerian Businesses in 2024",
-    excerpt: "Discover the latest trends, strategies, and tools that successful Nigerian businesses are using to dominate social media and increase their revenue by over 300%.",
+    title: "The Complete Guide to Starting Your Freelancing Journey in 2024",
+    excerpt: "From choosing your niche to landing your first client - everything you need to know about building a successful freelancing career in the digital age.",
     image: "/placeholder.svg",
-    author: "Marketing Team",
+    author: "Digital Mentors Team",
     authorImage: "/placeholder.svg",
     publishDate: "2024-03-15",
     readTime: "12 min read",
     views: "15.2K",
-    category: "Strategy",
+    category: "Career Guide",
     featured: true
   };
 
   const blogPosts = [
     {
       id: 2,
-      title: "5 WhatsApp Marketing Strategies That Generated ₦50M in Sales",
-      excerpt: "Learn how top Nigerian businesses are using WhatsApp Business API to convert leads into paying customers at scale.",
+      title: "How to Start Freelancing: From Beginner to Professional",
+      excerpt: "Learn the essential steps to build a successful freelancing career, including portfolio building, client acquisition, and pricing strategies.",
       image: "/placeholder.svg",
       author: "Sarah Johnson",
       authorImage: "/placeholder.svg",
       publishDate: "2024-03-12",
       readTime: "8 min read",
       views: "12.8K",
-      category: "WhatsApp Marketing"
+      category: "Freelancing"
     },
     {
       id: 3,
-      title: "AI Content Creation: How to Generate Viral Posts in Minutes",
-      excerpt: "Master the art of AI-powered content creation and discover the prompts that generate the most engaging social media posts.",
+      title: "Mastering HTML & CSS: Your First Step into Web Development",
+      excerpt: "Complete beginner's guide to HTML and CSS with practical examples and projects that you can build to showcase your skills.",
       image: "/placeholder.svg",
       author: "Michael Chen",
       authorImage: "/placeholder.svg",
       publishDate: "2024-03-10",
       readTime: "6 min read",
       views: "9.5K",
-      category: "AI Marketing"
+      category: "Web Development"
     },
     {
       id: 4,
-      title: "Instagram Stories vs. Reels: Which Drives More Sales?",
-      excerpt: "Data-driven analysis of 1000+ Nigerian businesses reveals which Instagram format converts best for different industries.",
+      title: "UI/UX Design Principles Every Beginner Should Know",
+      excerpt: "Discover the fundamental design principles that will help you create beautiful and user-friendly interfaces from day one.",
       image: "/placeholder.svg",
       author: "Grace Adebola",
       authorImage: "/placeholder.svg",
       publishDate: "2024-03-08",
       readTime: "10 min read",
       views: "8.2K",
-      category: "Instagram"
+      category: "Design"
     },
     {
       id: 5,
-      title: "LinkedIn for B2B Success: From 0 to 1000 Leads in 90 Days",
-      excerpt: "Step-by-step guide on how Nigerian B2B companies are using LinkedIn to generate qualified leads and close deals faster.",
+      title: "Digital Marketing Basics: Growing Your Online Presence",
+      excerpt: "Step-by-step guide on building your personal brand and marketing yourself effectively in the digital space.",
       image: "/placeholder.svg",
       author: "David Okafor",
       authorImage: "/placeholder.svg",
       publishDate: "2024-03-05",
       readTime: "15 min read",
       views: "11.3K",
-      category: "LinkedIn"
+      category: "Digital Marketing"
     },
     {
       id: 6,
-      title: "TikTok for Business: Why Nigerian Brands Can't Ignore It",
-      excerpt: "Explore how businesses are leveraging TikTok's algorithm to reach millions of Nigerian youth and drive unprecedented growth.",
+      title: "Building Your First Portfolio: Showcase Your Skills",
+      excerpt: "Learn how to create a compelling portfolio that attracts clients and employers, even as a complete beginner.",
       image: "/placeholder.svg",
       author: "Kemi Williams",
       authorImage: "/placeholder.svg",
       publishDate: "2024-03-03",
       readTime: "7 min read",
       views: "13.7K",
-      category: "TikTok"
+      category: "Portfolio"
     },
     {
       id: 7,
-      title: "Facebook Ads vs. Organic: ROI Analysis for Nigerian SMEs",
-      excerpt: "Comprehensive cost-benefit analysis comparing paid advertising with organic reach strategies for small and medium enterprises.",
+      title: "Learning to Code: Choosing Your Programming Path",
+      excerpt: "Comprehensive guide to help you choose the right programming language and learning path based on your career goals.",
       image: "/placeholder.svg",
       author: "Ahmed Hassan",
       authorImage: "/placeholder.svg",
       publishDate: "2024-03-01",
       readTime: "11 min read",
       views: "7.9K",
-      category: "Facebook"
+      category: "Programming"
     }
   ];
 
   const categories = [
     { name: "All Posts", count: 50 },
-    { name: "Strategy", count: 12 },
-    { name: "WhatsApp Marketing", count: 8 },
-    { name: "AI Marketing", count: 6 },
-    { name: "Instagram", count: 10 },
-    { name: "LinkedIn", count: 7 },
-    { name: "TikTok", count: 4 },
-    { name: "Facebook", count: 3 }
+    { name: "Career Guide", count: 12 },
+    { name: "Freelancing", count: 8 },
+    { name: "Web Development", count: 15 },
+    { name: "Design", count: 10 },
+    { name: "Digital Marketing", count: 7 },
+    { name: "Portfolio", count: 6 },
+    { name: "Programming", count: 9 }
   ];
 
   if (currentView === 'whatsapp') {
@@ -123,12 +123,12 @@ const BlogSection = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <Badge className="mb-4 bg-gradient-primary text-white">
-              Marketing Insights & Tips
+              Weekly Tips & Guides
             </Badge>
-            <h2 className="text-4xl font-bold mb-4">Latest Marketing Insights</h2>
+            <h2 className="text-4xl font-bold mb-4">Weekly Tips & Learning Guides</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Stay ahead of the competition with our expert insights, case studies, and actionable 
-              marketing strategies specifically designed for Nigerian businesses.
+              Stay updated with our weekly tips, tutorials, and guides to help you master digital skills 
+              and build a successful career in tech, design, and digital marketing.
             </p>
           </div>
 
@@ -184,7 +184,7 @@ const BlogSection = () => {
                   className="w-fit group"
                   onClick={() => setCurrentView('whatsapp')}
                 >
-                  Read Full Article
+                  Read Full Guide
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </CardContent>
@@ -290,10 +290,10 @@ const BlogSection = () => {
           <Card className="mt-16 bg-gradient-hero text-white shadow-glow">
             <CardContent className="p-8 text-center">
               <TrendingUp className="w-12 h-12 text-accent mx-auto mb-4" />
-              <h3 className="text-2xl font-bold mb-4">Get Weekly Marketing Insights</h3>
+              <h3 className="text-2xl font-bold mb-4">Get Weekly Learning Tips</h3>
               <p className="text-white/80 mb-6 max-w-2xl mx-auto">
-                Join 10,000+ Nigerian business owners who receive our weekly newsletter packed with 
-                actionable marketing tips, case studies, and exclusive strategies.
+                Join 5,000+ learners who receive our weekly newsletter packed with 
+                actionable learning tips, skill guides, and career development strategies.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
                 <input 
